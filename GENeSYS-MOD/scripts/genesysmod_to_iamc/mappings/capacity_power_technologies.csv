@@ -9,6 +9,7 @@ RES_CSP,Electricity|Solar|CSP
 RES_Geothermal,Electricity|Geothermal
 RES_Hydro_Large,Electricity|Hydro|Reservoir
 RES_Hydro_Small,Electricity|Hydro|Run of River
+D_PHS,Electricity|Hydro|Pumped Storage
 RES_Ocean,Electricity|Ocean
 RES_PV_Rooftop_Commercial,Electricity|Solar|PV
 RES_PV_Rooftop_Residential,Electricity|Solar|PV
@@ -54,5 +55,8 @@ CHP_Gas,Electricity|Gas|w/o CCS
 CHP_Nuclear,Electricity|Nuclear
 CHP_Biomass_CCS,Electricity|Biomass|w/ CCS
 CHP_Oil,Electricity|Oil|w/o CCS
-HLI_Fuelcell,Electricity|Hydrogen|Fuel Cell
-HLI_Fuelcell,Electricity|Hydrogen|Fuel Cell
+
+
+
+
+

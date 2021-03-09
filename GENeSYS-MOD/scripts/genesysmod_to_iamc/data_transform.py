@@ -149,8 +149,13 @@ def _extract_final_energy_heat(data_wrapper):
 
 
 def generate_capacity_values(data_wrapper: dw.DataWrapper):
+    generate_capacity_values_generic(data_wrapper, 'heat')
+    generate_capacity_values_generic(data_wrapper, 'power')
+
+
+def generate_capacity_values_generic(data_wrapper: dw.DataWrapper, category):
     logging.info('Executing: generate_capacity_values')
-    map_capacity_technology = dr.loadmap_from_csv('capacity_technologies')
+    map_capacity_technology = dr.loadmap_from_csv('capacity_' + category + '_technologies')
 
     capacity_values = data_wrapper.capacity_values.copy()
     capacity_values = capacity_values[capacity_values['type'] == 'TotalCapacity']
@@ -170,7 +175,7 @@ def generate_capacity_values(data_wrapper: dw.DataWrapper):
         ['model', 'scenario', 'region', 'technology', 'unit', 'subannual', 'year']).sum().reset_index()
     capacity_values.columns = ['Model', 'Scenario', 'Region', 'Variable', 'Unit', 'Subannual', 'Year', 'Value']
 
-    data_wrapper.transformed_data['capacity'] = capacity_values
+    data_wrapper.transformed_data['capacity_' + category] = capacity_values
 
     return capacity_values
 
@@ -184,7 +189,7 @@ def generate_transmission_capacity_values(data_wrapper: dw.DataWrapper):
     trade_values['unit'] = 'MW'
     trade_values['value'] = abs(trade_values['value'])*1000
     trade_values['subannual'] = 'Year'
-    trade_values['variable'] = 'Maximum Flow|Electricity|Grid'
+    trade_values['variable'] = 'Network|Electricity|Maximum Flow'
     trade_values['scenario'] = DEF_MAP_FILE_SCENARIOS[data_wrapper.input_file]
 
     trade_values = trade_values.replace({'region_to': 'UK'}, 'GB')
@@ -250,6 +255,100 @@ def generate_storage_capacity_values(data_wrapper: dw.DataWrapper):
     return capacity_values
 
 
+def generate_storage_efficiency_values(data_wrapper: dw.DataWrapper):
+    logging.info('Executing: generate_storage_efficiency_values')
+    map_capacity_technology = pd.read_csv(DEF_MAPPINGS_PATH / 'storages_efficiencies.csv', index_col=0, squeeze=True)
+
+    combines = []
+
+    for r in DEF_REGIONS:
+        capacity_value = map_capacity_technology.copy()
+        capacity_value['unit'] = '%'
+        capacity_value['region'] = r
+        capacity_value['model'] = DEF_MODEL_AND_VERSION
+        capacity_value['subannual'] = 'Year'
+        capacity_value['scenario'] = DEF_MAP_FILE_SCENARIOS[data_wrapper.input_file]
+        combines.append(capacity_value)
+
+    capacity_values = pd.concat(combines)
+
+    capacity_values = capacity_values.groupby(
+        ['model', 'scenario', 'region', 'technology', 'unit', 'subannual', 'year']).sum().reset_index()
+    capacity_values.columns = ['Model', 'Scenario', 'Region', 'Variable', 'Unit', 'Subannual', 'Year', 'Value']
+
+    data_wrapper.transformed_data['capacity_storage_efficiencies'] = capacity_values
+
+    return capacity_values
+
+
+def generate_storage_capacity_values_discharge(data_wrapper: dw.DataWrapper):
+    logging.info('Executing: generate_storage_capacity_values_discharge')
+    map_capacity_technology = dr.loadmap_from_csv('storages_discharge')
+
+    capacity_values = data_wrapper.capacity_values.copy()
+    capacity_values = capacity_values[capacity_values['type'] == 'TotalCapacity']
+
+    combines = []
+
+    for entry in map_capacity_technology:
+        capacity_value = capacity_values[capacity_values['technology'] == entry].copy()
+        capacity_value = capacity_value.replace({'technology': entry}, map_capacity_technology[entry])
+
+        capacity_value['unit'] = 'GW'
+        capacity_value['value'] = abs(capacity_value['value'])
+
+        capacity_value['model'] = DEF_MODEL_AND_VERSION
+        capacity_value['subannual'] = 'Year'
+
+        combines.append(capacity_value)
+
+    capacity_values = pd.concat(combines)
+
+    capacity_values = _set_scenarios(capacity_values)
+
+    capacity_values = capacity_values.groupby(
+        ['model', 'scenario', 'region', 'technology', 'unit', 'subannual', 'year']).sum().reset_index()
+    capacity_values.columns = ['Model', 'Scenario', 'Region', 'Variable', 'Unit', 'Subannual', 'Year', 'Value']
+
+    data_wrapper.transformed_data['capacity_storage_discharge'] = capacity_values
+
+    return capacity_values
+
+
+def generate_storage_capacity_values_charge(data_wrapper: dw.DataWrapper):
+    logging.info('Executing: generate_storage_capacity_values_charge')
+    map_capacity_technology = dr.loadmap_from_csv('storages_charge')
+
+    capacity_values = data_wrapper.capacity_values.copy()
+    capacity_values = capacity_values[capacity_values['type'] == 'TotalCapacity']
+
+    combines = []
+
+    for entry in map_capacity_technology:
+        capacity_value = capacity_values[capacity_values['technology'] == entry].copy()
+        capacity_value = capacity_value.replace({'technology': entry}, map_capacity_technology[entry])
+
+        capacity_value['unit'] = 'GW'
+        capacity_value['value'] = abs(capacity_value['value'])
+
+        capacity_value['model'] = DEF_MODEL_AND_VERSION
+        capacity_value['subannual'] = 'Year'
+
+        combines.append(capacity_value)
+
+    capacity_values = pd.concat(combines)
+
+    capacity_values = _set_scenarios(capacity_values)
+
+    capacity_values = capacity_values.groupby(
+        ['model', 'scenario', 'region', 'technology', 'unit', 'subannual', 'year']).sum().reset_index()
+    capacity_values.columns = ['Model', 'Scenario', 'Region', 'Variable', 'Unit', 'Subannual', 'Year', 'Value']
+
+    data_wrapper.transformed_data['capacity_storage_charge'] = capacity_values
+
+    return capacity_values
+
+
 def generate_transport_capacity_values(data_wrapper: dw.DataWrapper):
     logging.info('Executing: generate_transport_capacity_values')
     map_capacity_technology = dr.loadmap_from_csv('capacity_transport_technologies')
@@ -307,8 +406,13 @@ def generate_emissions_values(data_wrapper: dw.DataWrapper):
 
 
 def generate_additional_emissions_values(data_wrapper: dw.DataWrapper):
+    generate_additional_emissions_values_generic(data_wrapper, 'heat')
+    generate_additional_emissions_values_generic(data_wrapper, 'power')
+
+
+def generate_additional_emissions_values_generic(data_wrapper: dw.DataWrapper, category):
     logging.info('Executing: generate_additional_emissions_values')
-    map_capacity_technology = dr.loadmap_from_csv('capacity_technologies')
+    map_capacity_technology = dr.loadmap_from_csv('capacity_' + category + '_technologies')
 
     emission_values = data_wrapper.emission_values.copy()
     emission_values = emission_values[emission_values['technology'].isin(map_capacity_technology.keys())]
@@ -326,7 +430,7 @@ def generate_additional_emissions_values(data_wrapper: dw.DataWrapper):
         ['model', 'scenario', 'region', 'technology', 'unit', 'subannual', 'year']).sum().reset_index()
     emission_values.columns = ['Model', 'Scenario', 'Region', 'Variable', 'Unit', 'Subannual', 'Year', 'Value']
 
-    data_wrapper.transformed_data['emissions2'] = emission_values
+    data_wrapper.transformed_data['emissions2_' + category] = emission_values
 
     return emission_values
 
@@ -390,8 +494,13 @@ def generate_secondary_energy(data_wrapper: dw.DataWrapper):
 
 
 def _generate_exogenous_costs_values(data_wrapper: dw.DataWrapper, cost_type: str):
+    _generate_exogenous_costs_values_generic(data_wrapper, cost_type, 'heat')
+    _generate_exogenous_costs_values_generic(data_wrapper, cost_type, 'power')
+
+
+def _generate_exogenous_costs_values_generic(data_wrapper: dw.DataWrapper, cost_type: str, category):
     logging.info('Executing: generate_capital_costs_values')
-    map_capacity_technology = dr.loadmap_from_csv('capacity_technologies')
+    map_capacity_technology = dr.loadmap_from_csv('capacity_' + category + '_technologies')
 
     cost_values = data_wrapper.cost_values.copy()
     cost_values = cost_values[cost_values['type'] == cost_type]
@@ -427,7 +536,7 @@ def _generate_exogenous_costs_values(data_wrapper: dw.DataWrapper, cost_type: st
         ['model', 'scenario', 'region', 'technology', 'unit', 'subannual', 'year']).mean().reset_index()
     cost_values.columns = ['Model', 'Scenario', 'Region', 'Variable', 'Unit', 'Subannual', 'Year', 'Value']
 
-    data_wrapper.transformed_data['Ex ' + str(cost_type)] = cost_values
+    data_wrapper.transformed_data['Ex ' + str(cost_type) + category] = cost_values
 
     return cost_values
 

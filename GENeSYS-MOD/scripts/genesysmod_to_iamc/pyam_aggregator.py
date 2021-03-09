@@ -47,7 +47,7 @@ def generate_idataframe(data_wrapper, filter_only_yearly_values=False):
     idataframe.aggregate(variable='Final Energy|Electricity|Transportation',
                          components=['Final Energy|Transportation|Electricity'], append=True, recursive=False)
 
-    idataframe.aggregate(variable='Final Energy|Electricity|Other (excl. Heat, Cooling, Transport)',
+    idataframe.aggregate(variable='Final Energy|Electricity|Total (excl. Heat and Transport)',
                          components=['Final Energy|ElectricityDummy'], append=True, recursive=False)
 
     idataframe.aggregate(variable='Final Energy',
@@ -57,7 +57,8 @@ def generate_idataframe(data_wrapper, filter_only_yearly_values=False):
                              , 'Final Energy|ElectricityDummy'], append=True, recursive=False)
 
     idataframe.data = changeFinalEnergyToGWh(idataframe.data, 'Final Energy|Electricity|Transportation')
-    idataframe.data = changeFinalEnergyToGWh(idataframe.data, 'Final Energy|Electricity|Other (excl. Heat, Cooling, Transport)')
+    idataframe.data = changeFinalEnergyToGWh(idataframe.data, 'Final Energy|Electricity|Total (excl. Heat and '
+                                                              'Transport)')
     idataframe.data = changeFinalEnergyToGWh(idataframe.data, 'Final Energy|Electricity|Heat')
 
     idataframe.data = idataframe.data[idataframe.data['variable'] != 'Final Energy|ElectricityDummy']
@@ -79,15 +80,29 @@ def generate_idataframe(data_wrapper, filter_only_yearly_values=False):
     idataframe.aggregate_region(variable='Capacity|*', append=True)
 
     idataframe.aggregate(variable='Maximum Storage|Electricity|Energy Storage System', append=True, recursive=False)
+    idataframe.aggregate(variable='Maximum Charge|Electricity|Energy Storage System', append=True, recursive=False)
+    idataframe.aggregate(variable='Maximum Discharge|Electricity|Energy Storage System', append=True, recursive=False)
     idataframe.aggregate_region(variable='Maximum Storage|Electricity|Energy Storage System', append=True)
+    idataframe.aggregate_region(variable='Maximum Charge|Electricity|Energy Storage System', append=True)
+    idataframe.aggregate_region(variable='Maximum Discharge|Electricity|Energy Storage System', append=True)
 
     idataframe.aggregate(variable='Emissions|CO2|Electricity|Coal', append=True, recursive=False)
     idataframe.aggregate(variable='Emissions|CO2|Electricity|Gas|CCGT', append=True, recursive=False)
     idataframe.aggregate(variable='Emissions|CO2|Electricity|Gas', append=True, recursive=False)
     idataframe.aggregate(variable='Emissions|CO2|Electricity', append=True, recursive=False)
-    idataframe.aggregate(variable='Emissions|CO2|Residential and Commercial Heat|Electricity', append=True, recursive=False)
-    idataframe.aggregate(variable='Emissions|CO2|Residential and Commercial Heat', append=True, recursive=False)
-    idataframe.aggregate(variable='Emissions|CO2|Industrial Heat', append=True, recursive=False)
+
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Residential and Commercial|Electricity', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Residential and Commercial|Coal', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Residential and Commercial|Gas|CCGT', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Residential and Commercial|Gas', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Residential and Commercial', append=True, recursive=False)
+
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Industrial|Electricity', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Industrial|Coal', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Industrial|Gas|CCGT', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Industrial|Gas', append=True, recursive=False)
+    idataframe.aggregate(variable='Emissions|CO2|Heat|Industrial', append=True, recursive=False)
+
     idataframe.aggregate_region(variable='Emissions|CO2|*', append=True)
 
     idataframe.aggregate(variable='Energy Service|Transportation|Freight|Road|Internal Combustion Engine', append=True, recursive=False)
@@ -107,10 +122,12 @@ def generate_idataframe(data_wrapper, filter_only_yearly_values=False):
 
     idataframe.aggregate(variable='Secondary Energy|Electricity|Biomass', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Electricity|Coal', append=True, recursive=False)
+    idataframe.aggregate(variable='Secondary Energy|Electricity|Gas|CCGT', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Electricity|Gas', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Electricity|Oil', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Electricity|Solar', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Electricity|Wind', append=True, recursive=False)
+    idataframe.aggregate(variable='Secondary Energy|Electricity|Hydrogen', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Electricity', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Gases', append=True, recursive=False)
     idataframe.aggregate(variable='Secondary Energy|Heat', append=True, recursive=False)

@@ -66,8 +66,11 @@ def _generate_yearly_values(input_file):
     dt.generate_capacity_values(data_wrapper)
     dt.generate_transport_capacity_values(data_wrapper)
     dt.generate_storage_capacity_values(data_wrapper)
+    dt.generate_storage_capacity_values_charge(data_wrapper)
+    dt.generate_storage_capacity_values_discharge(data_wrapper)
+    dt.generate_storage_efficiency_values(data_wrapper)
     dt.generate_emissions_values(data_wrapper)
-    # dt.generate_additional_emissions_values(data_wrapper) - currently not in nomenclature
+    dt.generate_additional_emissions_values(data_wrapper)
     dt.generate_secondary_energy(data_wrapper)
     dt.generate_exogenous_costs(data_wrapper)
     dt.generate_co2_prices(data_wrapper)

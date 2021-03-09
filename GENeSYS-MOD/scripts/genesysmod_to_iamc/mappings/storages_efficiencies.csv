@@ -1,0 +1,33 @@
+technology,year,value
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2015,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2020,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2025,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2030,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2035,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2040,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2045,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Lithium-Ion,2050,0.95
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2015,0.866
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2020,0.866
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2025,0.894
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2030,0.894
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2035,0.894
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2040,0.894
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2045,0.922
+Roundtrip Efficiency|Electricity|Energy Storage System|Redox Flow,2050,0.922
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2015,0.735
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2020,0.735
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2025,0.837
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2030,0.837
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2035,0.837
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2040,0.837
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2045,0.837
+Roundtrip Efficiency|Electricity|Energy Storage System|Compressed Air,2050,0.837
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2015,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2020,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2025,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2030,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2035,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2040,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2045,0.866
+Pumping Efficiency|Electricity|Hydro|Pumped Storage,2050,0.866
